@@ -15,8 +15,17 @@ public class HandleEvents extends Events {
 
 	private void handleAdminCommand(String command)
 	{
-		if( command.equals("quit") )
-			actionCenter.quit("bubais");
+		try
+		{
+			if( command.equals("quit") )
+				actionCenter.quit("bubais");
+			else if( command.startsWith("join "))
+			{
+				actionCenter.joinChannel(command.split(" ")[1]);
+			}
+		}
+		catch(Exception e)
+		{}
 	}
 	
 	private void handleUserCommand(String command)
