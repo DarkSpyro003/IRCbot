@@ -100,8 +100,6 @@ public class Connection implements Runnable {
 			out.write("USER " + this.user() + " \"\" \"\" :" + this.name() + "\r\n");
 			out.flush();
 			this.isActive(true);
-			System.out.println("Starting thread.");
-			new Thread(this).start();
 		}
 	}
 
