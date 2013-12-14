@@ -165,6 +165,7 @@ public class Connection implements Runnable {
 				}
 				else if( type.equals("311") ) // Start WHOIS
 				{
+					waitingWhois = true;
 					if( waitingWhois )
 						whoisBuffer = new ArrayList<String>();
 				}
@@ -174,7 +175,7 @@ public class Connection implements Runnable {
 					if( waitingWhois )
 						whoisBuffer.add(buffer);
 				}
-				else if( type.equals("318") )
+				else if( type.equals("318") ) // End WHOIS
 				{
 					if( waitingWhois )
 					{
