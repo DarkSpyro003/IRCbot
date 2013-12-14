@@ -2,9 +2,9 @@ package info.ds003.ircbot;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
 import java.net.Socket;
 
 // Provided by http://www.hawkee.com/snippet/5656/
@@ -14,10 +14,17 @@ public class Connection implements Runnable {
 	private int port;
 	private String nick, user, name;
 	private boolean isActive;
+	private Events eventHandler;
+	private String dataQueue;
 
 	private Socket socket;
 	private BufferedReader in;
 	private BufferedWriter out;
+	
+	public void setEventHandler(Events eventHandler)
+	{
+		this.eventHandler = eventHandler;
+	}
 
 	protected void server(String server) 
 	{
@@ -87,6 +94,8 @@ public class Connection implements Runnable {
 		this.nick = nick;
 		this.user = user;
 		this.name = realname;
+		this.eventHandler = eventHandler;
+		dataQueue = "";
 	}
 
 	protected void start() throws java.io.IOException 
@@ -102,6 +111,57 @@ public class Connection implements Runnable {
 			this.isActive(true);
 		}
 	}
+	
+	public void sendData(String data)
+	{
+		dataQueue += data + "\r\n";
+	}
+	
+	private void handleReceivedData(String buffer)
+	{
+		System.out.println(buffer);
+		if (buffer.startsWith("PING")) 
+		{
+			sendData("PONG " + buffer.substring(5));
+		}
+		if( buffer.startsWith(":") )
+		{
+			String [] c = buffer.split(" ");
+			String sender = "", type = "", receiver = "", content = "";
+			sender = c[0];
+			type = c[1];
+			receiver = c[2];
+			for( int i = 3; i < c.length; ++i )
+			{
+				content += c[i];
+				if( i+1 != c.length )
+					content += " ";
+			}
+			if( content.length() > 1 )
+				content = content.substring(1);
+			//System.out.printf("%s: %s; %s: %s; %s: %s; %s: %s", "sender", sender, "type", type, "receiver", receiver, "content", content);
+		
+			if( type != null )
+			{
+				if( type.equals("QUIT") && Info.getNick(sender).equals(nick) )
+					isActive = false;
+				else if( type.equals("PRIVMSG") )
+				{
+					if( sender != null && content != null )
+						eventHandler.recvMsg(sender, receiver, content);
+				}
+				else if( type.equals("004") )
+				{
+					eventHandler.finishedLogin();
+				}
+				else if( type.equals("JOIN"))
+				{
+					if( receiver != null )
+						eventHandler.joinedChannel(receiver);
+				}
+			}
+		}
+	}
 
 	public void run() 
 	{
@@ -112,16 +172,18 @@ public class Connection implements Runnable {
 			{
 				while ((buffer = in.readLine()) != null) 
 				{
-					if (buffer.startsWith("PING")) 
+					handleReceivedData(buffer);
+					if(dataQueue.length() > 0)
 					{
-						out.write("PONG " + buffer.substring(5) + "\r\n");
+						out.write(dataQueue);
 						out.flush();
+						System.out.print("Sent " + dataQueue);
+						dataQueue = "";
 					}
 				}
 			} 
 			catch (java.io.IOException e) 
 			{
-				e.printStackTrace();
 			}
 		}
 	}
