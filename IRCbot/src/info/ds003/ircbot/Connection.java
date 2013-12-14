@@ -180,6 +180,10 @@ public class Connection implements Runnable {
 							resultBuffer[i] = whoisBuffer.get(i);
 					}
 				}
+				else if( type.equals("INVITE") )
+				{
+					
+				}
 				
 				if( waitingWhois )
 					whoisBuffer.add(buffer);
