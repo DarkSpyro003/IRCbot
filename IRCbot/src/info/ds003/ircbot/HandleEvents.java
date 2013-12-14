@@ -23,6 +23,18 @@ public class HandleEvents extends Events {
 			{
 				actionCenter.joinChannel(command.split(" ")[1]);
 			}
+			else if( command.startsWith("raw ") )
+			{
+				String toSend = "";
+				String [] cmd = command.split(" ");
+				for( int i = 1; i < cmd.length; ++i )
+				{
+					toSend += cmd[i];
+					if( i+1 < cmd.length )
+						toSend += " ";
+				}
+				actionCenter.sendRawData(toSend);
+			}
 		}
 		catch(Exception e)
 		{}
@@ -51,11 +63,17 @@ public class HandleEvents extends Events {
 	@Override
 	public void joinedChannel(String channel) {
 		actionCenter.sendMessage(channel, "Hello everyone! I succesfully joined " + channel);
+		actionCenter.sendAction(channel, "is testing");
 	}
 
 	@Override
 	public void recvChannelMsg(String sender, String channel, String content) {
 		if( content.startsWith("" + prefix) )
 			handleCommand(main.getAdmin().equals(sender), content.substring(1));
+	}
+
+	@Override
+	public void whoisResult(String[] result) {
+		
 	}
 }

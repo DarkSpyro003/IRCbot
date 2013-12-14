@@ -11,6 +11,7 @@ public abstract class Events {
 	public abstract void recvChannelMsg(String sender, String channel, String content);
 	public abstract void recvPrivMsg(String sender, String content);
 	public abstract void joinedChannel(String channel);
+	public abstract void whoisResult(String [] result);
 
 	public Events(Main main, Actions actionCenter, char prefix)
 	{

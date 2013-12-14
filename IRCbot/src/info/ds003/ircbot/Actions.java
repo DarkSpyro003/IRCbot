@@ -9,15 +9,34 @@ public class Actions {
 		this.network = network;
 	}
 	
+	public void sendRawData(String data)
+	{
+		network.sendData(data);
+	}
+	
 	public void sendMessage(String receiver, String content)
 	{
 		network.sendData("PRIVMSG " + Info.getNick(receiver) + " :" + content);
 	}
 	
+	public void sendAction(String receiver, String content)
+	{
+		sendMessage(receiver, "\001" + "ACTION " + content + "\001");
+	}
+	
 	public void joinChannel(String channel)
 	{
-		System.out.println("Joining " + channel);
 		network.sendData("JOIN " + channel);
+	}
+	
+	public void partChannel(String channel)
+	{
+		network.sendData("PART " + channel);
+	}
+	
+	public void whois(String name)
+	{
+		network.sendData("WHOIS " + name);
 	}
 	
 	public void quit()

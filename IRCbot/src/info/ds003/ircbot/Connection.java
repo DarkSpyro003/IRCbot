@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.List;
+import java.util.ArrayList;
 
 // Provided by http://www.hawkee.com/snippet/5656/
 public class Connection implements Runnable {
@@ -16,6 +18,8 @@ public class Connection implements Runnable {
 	private boolean isActive;
 	private Events eventHandler;
 	private String dataQueue;
+	private boolean waitingWhois = false;
+	private List<String> whoisBuffer;
 
 	private Socket socket;
 	private BufferedReader in;
@@ -141,7 +145,7 @@ public class Connection implements Runnable {
 				content = content.substring(1);
 			//System.out.printf("%s: %s; %s: %s; %s: %s; %s: %s", "sender", sender, "type", type, "receiver", receiver, "content", content);
 		
-			if( type != null )
+			if( type != null && !buffer.startsWith("PING") )
 			{
 				if( type.equals("QUIT") && Info.getNick(sender).equals(nick) )
 					isActive = false;
@@ -159,6 +163,26 @@ public class Connection implements Runnable {
 					if( receiver != null )
 						eventHandler.joinedChannel(receiver);
 				}
+				else if( type.equals("311") ) // Start WHOIS
+				{
+					if( waitingWhois )
+						whoisBuffer = new ArrayList<String>();
+				}
+				else if( type.equals("318") )
+				{
+					if( waitingWhois )
+					{
+						waitingWhois = false;
+						whoisBuffer.add(buffer);
+						int n = whoisBuffer.size();
+						String [] resultBuffer = new String[n];
+						for( int i = 0; i < n; ++i )
+							resultBuffer[i] = whoisBuffer.get(i);
+					}
+				}
+				
+				if( waitingWhois )
+					whoisBuffer.add(buffer);
 			}
 		}
 	}
