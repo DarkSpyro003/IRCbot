@@ -21,12 +21,6 @@ public abstract class Events {
 	
 	public void recvMsg(String sender, String receiver, String content)
 	{
-		if( content.startsWith(":"))
-			content = content.substring(1);
-		
-		if( sender.startsWith(":"))
-			sender = sender.substring(1);
-		
 		if( receiver.startsWith("#") )
 			recvChannelMsg(sender, receiver, content);
 		else

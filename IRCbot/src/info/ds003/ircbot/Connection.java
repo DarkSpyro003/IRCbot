@@ -126,6 +126,7 @@ public class Connection implements Runnable {
 		}
 		if( buffer.startsWith(":") )
 		{
+			buffer = buffer.substring(1);
 			String [] c = buffer.split(" ");
 			String sender = "", type = "", receiver = "", content = "";
 			sender = c[0];
@@ -184,6 +185,7 @@ public class Connection implements Runnable {
 			} 
 			catch (java.io.IOException e) 
 			{
+				e.printStackTrace();
 			}
 		}
 	}
