@@ -21,7 +21,7 @@ public class Actions {
 	
 	public void sendAction(String receiver, String content)
 	{
-		sendMessage(receiver, "\001" + "ACTION " + content + "\001");
+		network.sendData("PRIVMSG " + Info.getNick(receiver) + " :" + "\001" + "ACTION " + content + "\001");
 	}
 	
 	public void joinChannel(String channel)
