@@ -117,7 +117,10 @@ public class Connection implements Runnable {
 	
 	public void sendData(String data)
 	{
-		dataQueue += data.trim() + "\r\n";
+		if( !data.contains("\001")) // trim non-ctcp data only
+			data = data.trim();
+		
+		dataQueue += data + "\r\n";
 	}
 	
 	private void handleReceivedData(String buffer)

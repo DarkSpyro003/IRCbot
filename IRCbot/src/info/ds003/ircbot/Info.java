@@ -15,6 +15,6 @@ public class Info {
 			return name;
 		}
 		
-		return null;
+		return name;
 	}
 }

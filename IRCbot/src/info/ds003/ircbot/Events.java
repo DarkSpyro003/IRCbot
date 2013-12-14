@@ -13,6 +13,7 @@ public abstract class Events {
 	public abstract void joinedChannel(String channel);
 	public abstract void whoisResult(String [] result);
 	public abstract void recvChannelInvite(String sender, String channel);
+	public abstract void recvCtcpMsg(String sender, String receiver, String content);
 
 	public Events(Main main, Actions actionCenter, char prefix)
 	{
@@ -25,6 +26,8 @@ public abstract class Events {
 	{
 		if( receiver.startsWith("#") )
 			recvChannelMsg(sender, receiver, content);
+		else if( content.startsWith("\001") )
+			recvCtcpMsg(sender, receiver, content);
 		else
 			recvPrivMsg(sender, content);
 	}

@@ -2,6 +2,12 @@ package info.ds003.ircbot;
 
 public class HandleEvents extends Events {
 	
+	public void handleCtcp(String sender, String receiver, String content)
+	{
+		if( content.contains("VERSION") )
+			actionCenter.sendCtcp(sender, "VERSION", "SparxBot:EarlyAlpha:" + System.getProperty("os.name"), "NOTICE");
+	}
+	
 	private void handleCommand(boolean admin, String command)
 	{
 		if( command.startsWith(":") )
@@ -82,5 +88,10 @@ public class HandleEvents extends Events {
 	@Override
 	public void recvChannelInvite(String sender, String channel) {
 		handleCommand(main.getAdmin().equals(sender), "join " + channel);
+	}
+
+	@Override
+	public void recvCtcpMsg(String sender, String receiver, String content) {
+		handleCtcp(sender, receiver, content);
 	}
 }

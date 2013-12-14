@@ -47,5 +47,6 @@ public class Main {
 	public void ready()
 	{
 		actionCenter.joinChannel("#Sparxy");
+		actionCenter.sendCtcp("Sparxyxxx", "VERSION", "");
 	}
 }
