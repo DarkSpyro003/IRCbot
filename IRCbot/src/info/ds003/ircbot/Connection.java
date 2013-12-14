@@ -168,6 +168,12 @@ public class Connection implements Runnable {
 					if( waitingWhois )
 						whoisBuffer = new ArrayList<String>();
 				}
+				else if( type.equals("312") || type.equals("313") || type.equals("317") // WHOIS Replies
+						|| type.equals("319") || type.equals("671") || type.equals("690") )
+				{
+					if( waitingWhois )
+						whoisBuffer.add(buffer);
+				}
 				else if( type.equals("318") )
 				{
 					if( waitingWhois )
@@ -187,9 +193,6 @@ public class Connection implements Runnable {
 					
 					eventHandler.recvChannelInvite(sender, content);
 				}
-				
-				if( waitingWhois )
-					whoisBuffer.add(buffer);
 			}
 		}
 	}
