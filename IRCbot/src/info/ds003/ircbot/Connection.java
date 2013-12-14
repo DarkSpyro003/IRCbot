@@ -117,7 +117,7 @@ public class Connection implements Runnable {
 	
 	public void sendData(String data)
 	{
-		dataQueue += data + "\r\n";
+		dataQueue += data.trim() + "\r\n";
 	}
 	
 	private void handleReceivedData(String buffer)
