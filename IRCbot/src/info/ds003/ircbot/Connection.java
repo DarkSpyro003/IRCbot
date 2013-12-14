@@ -182,7 +182,10 @@ public class Connection implements Runnable {
 				}
 				else if( type.equals("INVITE") )
 				{
+					if( content.startsWith(":") )
+						content = content.substring(1);
 					
+					eventHandler.recvChannelInvite(sender, content);
 				}
 				
 				if( waitingWhois )
