@@ -122,7 +122,7 @@ public class Connection implements Runnable {
 	
 	private void handleReceivedData(String buffer)
 	{
-		System.out.println(buffer);
+		System.out.println("> " + buffer);
 		if (buffer.startsWith("PING")) 
 		{
 			sendData("PONG " + buffer.substring(5));
@@ -201,7 +201,7 @@ public class Connection implements Runnable {
 					{
 						out.write(dataQueue);
 						out.flush();
-						System.out.print("Sent " + dataQueue);
+						System.out.print("< " + dataQueue);
 						dataQueue = "";
 					}
 				}

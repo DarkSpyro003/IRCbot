@@ -12,6 +12,7 @@ public abstract class Events {
 	public abstract void recvPrivMsg(String sender, String content);
 	public abstract void joinedChannel(String channel);
 	public abstract void whoisResult(String [] result);
+	public abstract void recvChannelInvite(String sender, String channel);
 
 	public Events(Main main, Actions actionCenter, char prefix)
 	{
