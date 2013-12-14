@@ -94,7 +94,6 @@ public class Connection implements Runnable {
 		this.nick = nick;
 		this.user = user;
 		this.name = realname;
-		this.eventHandler = eventHandler;
 		dataQueue = "";
 	}
 
