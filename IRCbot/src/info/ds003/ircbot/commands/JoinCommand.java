@@ -1,6 +1,5 @@
 package info.ds003.ircbot.commands;
 
-import info.ds003.ircbot.Actions;
 import info.ds003.ircbot.Main;
 
 public class JoinCommand extends Command {
