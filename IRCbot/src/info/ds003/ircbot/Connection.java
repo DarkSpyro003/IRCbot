@@ -222,6 +222,7 @@ public class Connection implements Runnable {
 			} 
 			catch (java.io.IOException e) 
 			{
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}

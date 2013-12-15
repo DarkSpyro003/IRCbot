@@ -4,9 +4,9 @@ public class Actions {
 	
 	private Connection network;
 
-	public Actions(Connection network)
+	public Actions(Main main)
 	{
-		this.network = network;
+		network = main.getNetwork();
 	}
 	
 	public void sendRawData(String data)

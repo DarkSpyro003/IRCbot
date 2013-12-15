@@ -1,5 +1,9 @@
 package info.ds003.ircbot;
 
+import info.ds003.ircbot.commands.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
@@ -9,11 +13,40 @@ public class Main {
 	private Connection network;
 	private Events eventHandler;
 	private String admin = "Sparxyxxx!Sparxyxxx@2001:41d0:2:a98c::1";
-	private char prefix = '!';
+	private String prefix = "!";
+	private List<Command> commands = new ArrayList<Command>();
+	
+	public Command [] getCommandRegistration()
+	{
+		int n = commands.size();
+		Command [] command = new Command[n];
+		for( int i = 0; i < n; ++i )
+			command[i] = commands.get(i);
+		
+		return command;
+	}
+	
+	public void registerCommands()
+	{
+		registerCommand(new JoinCommand("join", true, this));
+		registerCommand(new PartCommand("part", true, this));
+		registerCommand(new QuitCommand("quit", true, this));
+		registerCommand(new RawCommand("raw", true, this));
+	}
+	
+	public void registerCommand(Command command)
+	{
+		commands.add(command);
+	}
 
 	public static void main(String args[]) 
 	{
-		new Main();
+		new Main("irc.esper.net", 6667, "SparxBot", "Sparxy", "Sparxy");
+	}
+	
+	public String getPrefix()
+	{
+		return prefix;
 	}
 	
 	public String getAdmin()
@@ -21,13 +54,28 @@ public class Main {
 		return admin;
 	}
 	
-	public Main()
+	public Connection getNetwork()
+	{
+		return network;
+	}
+	
+	public Events getEventHandler()
+	{
+		return eventHandler;
+	}
+	
+	public Actions getActionCenter()
+	{
+		return actionCenter;
+	}
+	
+	public Main(String server, int port, String nick, String user, String realname)
 	{
 		System.out.println("Starting bot.");
-		
-		network = new Connection("irc.esper.net", 6667, "SparxBot", "Sparxy", "Sparxy");
-		actionCenter = new Actions(network);
-		eventHandler = new HandleEvents(this, actionCenter, prefix);
+		network = new Connection(server, port, nick, user, realname);
+		actionCenter = new Actions(this);
+		registerCommands();
+		eventHandler = new HandleEvents(this);
 		network.setEventHandler(eventHandler);
 		ExecutorService threadExec = Executors.newCachedThreadPool();
 		
@@ -47,6 +95,5 @@ public class Main {
 	public void ready()
 	{
 		actionCenter.joinChannel("#Sparxy");
-		actionCenter.sendCtcp("Sparxyxxx", "VERSION", "");
 	}
 }
