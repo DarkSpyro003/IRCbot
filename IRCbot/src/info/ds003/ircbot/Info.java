@@ -1,6 +1,10 @@
 package info.ds003.ircbot;
 
 public class Info {
+	
+	public static boolean isInteger(String str) {
+	    return str.matches("^-?[0-9]+(\\.[0-9]+)?$");
+	}
 
 	public static String getNick(String name)
 	{

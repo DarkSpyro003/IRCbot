@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
+import info.ds003.ircbot.events.*;
 
 // Provided by http://www.hawkee.com/snippet/5656/
 public class Connection implements Runnable {
@@ -149,8 +150,16 @@ public class Connection implements Runnable {
 		
 			if( type != null && !buffer.startsWith("PING") )
 			{
+				// REPLACE with working code!
+				Main main = null;
+				EventHandler handler = new EventHandler(main);
+				handler.getEvent(type).handleEvent(sender, type, receiver, content);
+				
+				
 				if( type.equals("QUIT") && Info.getNick(sender).equals(nick) )
+				{
 					isActive = false;
+				}
 				else if( type.equals("PRIVMSG") )
 				{
 					if( sender != null && content != null )
