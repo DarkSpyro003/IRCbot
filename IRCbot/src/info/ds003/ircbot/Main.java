@@ -15,6 +15,7 @@ public class Main {
 	private String admin = "Sparxyxxx!Sparxyxxx@2001:41d0:2:a98c::1";
 	private String prefix = "!";
 	private List<Command> commands = new ArrayList<Command>();
+	private CommandHandler commandHandler;
 	
 	public Command [] getCommandRegistration()
 	{
@@ -42,6 +43,11 @@ public class Main {
 	public static void main(String args[]) 
 	{
 		new Main("irc.esper.net", 6667, "SparxBot", "Sparxy", "Sparxy");
+	}
+	
+	public CommandHandler getCommandHandler()
+	{
+		return commandHandler;
 	}
 	
 	public String getPrefix()
@@ -77,6 +83,7 @@ public class Main {
 		registerCommands();
 		eventHandler = new HandleEvents(this);
 		network.setEventHandler(eventHandler);
+		commandHandler = new CommandHandler(this);
 		ExecutorService threadExec = Executors.newCachedThreadPool();
 		
 		try
