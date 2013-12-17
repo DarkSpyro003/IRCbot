@@ -11,6 +11,7 @@ public class CommandHandler {
 	public CommandHandler(Main main)
 	{
 		actionCenter = main.getActionCenter();
+		commands = main.getCommandRegistration();
 	}
 
 	public void handleCommand(boolean admin, String command, String sender)

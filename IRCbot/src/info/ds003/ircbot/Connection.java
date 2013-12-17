@@ -150,7 +150,9 @@ public class Connection implements Runnable {
 		
 			if( type != null && !buffer.startsWith("PING") )
 			{
-				eventHandler.getEvent(type).handleEvent(sender, type, receiver, content);
+				Event event = eventHandler.getEvent(type);
+				if( event != null )
+					event.handleEvent(sender, type, receiver, content);
 				
 				// Special case
 				if( type.equals("QUIT") && Info.getNick(sender).equals(nick) )

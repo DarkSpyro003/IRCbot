@@ -9,8 +9,8 @@ public class EventHandler {
 	
 	protected int numNumericalEvents = 1000;
 	protected Event [] numericalEvents;
-	protected ArrayList<String> stringEventStrings;
-	protected ArrayList<Event> stringEvents;
+	protected ArrayList<String> stringEventStrings = new ArrayList<String>();
+	protected ArrayList<Event> stringEvents  = new ArrayList<Event>();
 	protected Main main;
 
 	public EventHandler(Main main)
