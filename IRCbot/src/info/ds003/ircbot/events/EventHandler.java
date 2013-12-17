@@ -1,5 +1,7 @@
 package info.ds003.ircbot.events;
 
+import java.util.ArrayList;
+
 import info.ds003.ircbot.Main;
 import info.ds003.ircbot.Info;
 
@@ -7,9 +9,8 @@ public class EventHandler {
 	
 	protected int numNumericalEvents = 1000;
 	protected Event [] numericalEvents;
-	protected int numStringEvents = 0;
-	protected String [] stringEventStrings;
-	protected Event [] stringEvents;
+	protected ArrayList<String> stringEventStrings;
+	protected ArrayList<Event> stringEvents;
 	protected Main main;
 
 	public EventHandler(Main main)
@@ -40,9 +41,9 @@ public class EventHandler {
 	
 	private Event fetchEvent(String s)
 	{
-		for( int i = 0; i < stringEvents.length; ++i )
-			if( stringEventStrings[i].equals(s) )
-				return stringEvents[i];
+		for( int i = 0; i < stringEvents.size(); ++i )
+			if( stringEventStrings.get(i).equals(s) )
+				return stringEvents.get(i);
 		
 		return null;
 	}
@@ -69,12 +70,7 @@ public class EventHandler {
 	
 	protected void registerEvent(String type, Event ev)
 	{
-		numStringEvents++;
-		Event [] tmpEvents = new Event[numStringEvents];
-		for( int i = 0; i < numStringEvents-1; ++i )
-			tmpEvents[i] = stringEvents[i];
-		
-		tmpEvents[numStringEvents-1] = ev;
-		stringEvents = tmpEvents;
+		stringEventStrings.add(type);
+		stringEvents.add(ev);
 	}
 }
