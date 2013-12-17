@@ -16,7 +16,7 @@ public class Connection implements Runnable {
 	private int port;
 	private String nick, user, name;
 	private boolean isActive;
-	private Events eventHandler;
+	private EventHandler eventHandler;
 	private String dataQueue;
 	private boolean waitingWhois = false;
 	private List<String> whoisBuffer;
@@ -25,7 +25,7 @@ public class Connection implements Runnable {
 	private BufferedReader in;
 	private BufferedWriter out;
 	
-	public void setEventHandler(Events eventHandler)
+	public void setEventHandler(EventHandler eventHandler)
 	{
 		this.eventHandler = eventHandler;
 	}
@@ -150,60 +150,12 @@ public class Connection implements Runnable {
 		
 			if( type != null && !buffer.startsWith("PING") )
 			{
-				// REPLACE with working code!
-				Main main = null;
-				EventHandler handler = new EventHandler(main);
-				handler.getEvent(type).handleEvent(sender, type, receiver, content);
+				eventHandler.getEvent(type).handleEvent(sender, type, receiver, content);
 				
-				
+				// Special case
 				if( type.equals("QUIT") && Info.getNick(sender).equals(nick) )
 				{
 					isActive = false;
-				}
-				else if( type.equals("PRIVMSG") )
-				{
-					if( sender != null && content != null )
-						eventHandler.recvMsg(sender, receiver, content);
-				}
-				else if( type.equals("004") )
-				{
-					eventHandler.finishedLogin();
-				}
-				else if( type.equals("JOIN"))
-				{
-					if( receiver != null )
-						eventHandler.joinedChannel(receiver);
-				}
-				else if( type.equals("311") ) // Start WHOIS
-				{
-					waitingWhois = true;
-					if( waitingWhois )
-						whoisBuffer = new ArrayList<String>();
-				}
-				else if( type.equals("312") || type.equals("313") || type.equals("317") // WHOIS Replies
-						|| type.equals("319") || type.equals("671") || type.equals("690") )
-				{
-					if( waitingWhois )
-						whoisBuffer.add(buffer);
-				}
-				else if( type.equals("318") ) // End WHOIS
-				{
-					if( waitingWhois )
-					{
-						waitingWhois = false;
-						whoisBuffer.add(buffer);
-						int n = whoisBuffer.size();
-						String [] resultBuffer = new String[n];
-						for( int i = 0; i < n; ++i )
-							resultBuffer[i] = whoisBuffer.get(i);
-					}
-				}
-				else if( type.equals("INVITE") )
-				{
-					if( content.startsWith(":") )
-						content = content.substring(1);
-					
-					eventHandler.recvChannelInvite(sender, content);
 				}
 			}
 		}

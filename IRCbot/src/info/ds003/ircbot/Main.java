@@ -1,6 +1,7 @@
 package info.ds003.ircbot;
 
 import info.ds003.ircbot.commands.*;
+import info.ds003.ircbot.events.EventHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Main {
 	
 	private Actions actionCenter;
 	private Connection network;
-	private Events eventHandler;
+	private EventHandler eventHandler;
 	private String admin = "Sparxyxxx!Sparxyxxx@2001:41d0:2:a98c::1";
 	private String prefix = "!";
 	private List<Command> commands = new ArrayList<Command>();
@@ -65,7 +66,7 @@ public class Main {
 		return network;
 	}
 	
-	public Events getEventHandler()
+	public EventHandler getEventHandler()
 	{
 		return eventHandler;
 	}
@@ -81,9 +82,9 @@ public class Main {
 		network = new Connection(server, port, nick, user, realname);
 		actionCenter = new Actions(this);
 		registerCommands();
-		eventHandler = new HandleEvents(this);
-		network.setEventHandler(eventHandler);
 		commandHandler = new CommandHandler(this);
+		eventHandler = new EventHandler(this);
+		network.setEventHandler(eventHandler);
 		ExecutorService threadExec = Executors.newCachedThreadPool();
 		
 		try

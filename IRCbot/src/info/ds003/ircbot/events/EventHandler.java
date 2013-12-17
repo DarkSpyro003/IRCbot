@@ -19,6 +19,8 @@ public class EventHandler {
 		Event unhandled = new UnhandledEvent(main);
 		for( int i = 0; i < numNumericalEvents; ++i )
 			numericalEvents[i] = unhandled;
+		
+		registerEvents();
 	}
 	
 	public Event getEvent(String s)
