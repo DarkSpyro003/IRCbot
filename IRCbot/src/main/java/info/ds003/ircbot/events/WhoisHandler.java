@@ -3,6 +3,7 @@ package info.ds003.ircbot.events;
 import info.ds003.ircbot.Main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WhoisHandler extends Event {
@@ -16,7 +17,7 @@ public class WhoisHandler extends Event {
     }
 
     public String[] getWhoisResult() {
-        return resultBuffer;
+        return Arrays.copyOf(resultBuffer, resultBuffer.length);
     }
 
     @Override

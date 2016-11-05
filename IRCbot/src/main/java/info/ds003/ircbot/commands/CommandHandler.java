@@ -14,22 +14,19 @@ public class CommandHandler {
     }
 
     public void handleCommand(boolean admin, String command, String sender) {
-        if (command.startsWith(":"))
-            command = command.substring(1);
-
         try {
             String[] cmd = command.split(" ");
             String commandName = cmd[0];
-            String commandContent = "";
+            StringBuilder commandContent = new StringBuilder();
             for (int i = 1; i < cmd.length; ++i) {
-                commandContent += cmd[i];
+                commandContent.append(cmd[i]);
                 if (i + 1 < cmd.length)
-                    commandContent += " ";
+                    commandContent.append(" ");
             }
 
             Command run = findCommand(commandName);
             if (run != null)
-                run.execute(commandContent, admin);
+                run.execute(commandContent.toString(), admin);
             else
                 actionCenter.sendMessage(sender, "Command not found!");
         } catch (Exception e) {

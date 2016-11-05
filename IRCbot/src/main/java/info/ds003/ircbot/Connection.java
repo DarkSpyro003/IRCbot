@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.List;
 
 // Provided by http://www.hawkee.com/snippet/5656/
 public class Connection implements Runnable {
@@ -19,8 +18,6 @@ public class Connection implements Runnable {
     private boolean isActive;
     private EventHandler eventHandler;
     private String dataQueue;
-    private boolean waitingWhois = false;
-    private List<String> whoisBuffer;
 
     private Socket socket;
     private BufferedReader in;
@@ -90,8 +87,8 @@ public class Connection implements Runnable {
 
     protected void start() throws java.io.IOException {
         this.socket = new Socket(this.server(), this.port());
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+        this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
         if (socket.isConnected()) {
             out.write("NICK " + this.nick() + "\r\n");
             out.write("USER " + this.user() + " \"\" \"\" :" + this.name() + "\r\n");
@@ -115,15 +112,17 @@ public class Connection implements Runnable {
         if (buffer.startsWith(":")) {
             buffer = buffer.substring(1);
             String[] c = buffer.split(" ");
-            String sender = "", type = "", receiver = "", content = "";
+            String sender = "", type = "", receiver = "";
+            StringBuilder contentBuilder = new StringBuilder();
             sender = c[0];
             type = c[1];
             receiver = c[2];
             for (int i = 3; i < c.length; ++i) {
-                content += c[i];
+                contentBuilder.append(c[i]);
                 if (i + 1 != c.length)
-                    content += " ";
+                    contentBuilder.append(" ");
             }
+            String content = contentBuilder.toString();
             if (content.length() > 1)
                 content = content.substring(1);
             //System.out.printf("%s: %s; %s: %s; %s: %s; %s: %s", "sender", sender, "type", type, "receiver", receiver, "content", content);
