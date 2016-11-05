@@ -37,9 +37,9 @@ public class CommandHandler {
     }
 
     private Command findCommand(String name) {
-        for (int i = 0; i < commands.length; ++i)
-            if (commands[i].getName().equals(name))
-                return commands[i];
+        for (Command command : commands)
+            if (command.getName().equals(name))
+                return command;
 
         return null;
     }

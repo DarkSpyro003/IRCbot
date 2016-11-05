@@ -4,12 +4,12 @@ import info.ds003.ircbot.Main;
 
 public class QuitCommand extends Command {
 
-    public QuitCommand(String name, boolean requiresAdmin, Main main) {
-        super(name, requiresAdmin, main);
+    public QuitCommand(Main main) {
+        super("quit", true, main);
     }
 
-    public QuitCommand(String name, String description, boolean requiresAdmin, Main main) {
-        super(name, description, requiresAdmin, main);
+    public QuitCommand(String description, Main main) {
+        super("quit", description, true, main);
     }
 
     @Override

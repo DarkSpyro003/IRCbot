@@ -28,10 +28,10 @@ public class Main {
     }
 
     public void registerCommands() {
-        registerCommand(new JoinCommand("join", true, this));
-        registerCommand(new PartCommand("part", true, this));
-        registerCommand(new QuitCommand("quit", true, this));
-        registerCommand(new RawCommand("raw", true, this));
+        registerCommand(new JoinCommand(this));
+        registerCommand(new PartCommand(this));
+        registerCommand(new QuitCommand(this));
+        registerCommand(new RawCommand(this));
     }
 
     public void registerCommand(Command command) {

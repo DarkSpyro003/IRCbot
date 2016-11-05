@@ -27,47 +27,47 @@ public class Connection implements Runnable {
         this.eventHandler = eventHandler;
     }
 
-    protected void server(String server) {
+    protected void setServer(String server) {
         this.server = server;
     }
 
-    protected String server() {
+    protected String getServer() {
         return this.server;
     }
 
-    protected void port(int port) {
+    protected void setPort(int port) {
         this.port = port;
     }
 
-    protected int port() {
+    protected int getPort() {
         return this.port;
     }
 
-    protected void nick(String nick) {
+    protected void setNick(String nick) {
         this.nick = nick;
     }
 
-    protected String nick() {
+    protected String getNick() {
         return this.nick;
     }
 
-    protected void user(String user) {
+    protected void setUser(String user) {
         this.user = user;
     }
 
-    protected String user() {
+    protected String getUser() {
         return this.user;
     }
 
-    protected void name(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 
-    protected String name() {
+    protected String getName() {
         return this.name;
     }
 
-    protected void isActive(boolean bool) {
+    protected void setActive(boolean bool) {
         this.isActive = bool;
     }
 
@@ -86,14 +86,14 @@ public class Connection implements Runnable {
     }
 
     protected void start() throws java.io.IOException {
-        this.socket = new Socket(this.server(), this.port());
+        this.socket = new Socket(this.getServer(), this.getPort());
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
         this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
         if (socket.isConnected()) {
-            out.write("NICK " + this.nick() + "\r\n");
-            out.write("USER " + this.user() + " \"\" \"\" :" + this.name() + "\r\n");
+            out.write("NICK " + this.nick + "\r\n");
+            out.write("USER " + this.user + " \"\" \"\" :" + this.name + "\r\n");
             out.flush();
-            this.isActive(true);
+            this.setActive(true);
         }
     }
 
@@ -112,7 +112,7 @@ public class Connection implements Runnable {
         if (buffer.startsWith(":")) {
             buffer = buffer.substring(1);
             String[] c = buffer.split(" ");
-            String sender = "", type = "", receiver = "";
+            String sender, type, receiver;
             StringBuilder contentBuilder = new StringBuilder();
             sender = c[0];
             type = c[1];

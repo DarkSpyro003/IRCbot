@@ -4,12 +4,12 @@ import info.ds003.ircbot.Main;
 
 public class RawCommand extends Command {
 
-    public RawCommand(String name, boolean requiresAdmin, Main main) {
-        super(name, requiresAdmin, main);
+    public RawCommand(Main main) {
+        super("raw", true, main);
     }
 
-    public RawCommand(String name, String description, boolean requiresAdmin, Main main) {
-        super(name, description, requiresAdmin, main);
+    public RawCommand(String description, Main main) {
+        super("raw", description, true, main);
     }
 
     @Override

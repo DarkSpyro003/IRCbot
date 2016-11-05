@@ -22,13 +22,12 @@ public class WhoisHandler extends Event {
 
     @Override
     public void handleEvent(String sender, String type, String receiver, String content) {
-        if (type.equals("311")) // Start WHOIS
-        {
+        if (type.equals("311")) {
+            // Start WHOIS
             waitingWhois = true;
-            if (waitingWhois)
-                whoisBuffer = new ArrayList<String>();
-        } else if (type.equals("318")) // End WHOIS
-        {
+            whoisBuffer = new ArrayList<String>();
+        } else if (type.equals("318")) {
+            // End WHOIS
             if (waitingWhois) {
                 waitingWhois = false;
                 whoisBuffer.add(content);

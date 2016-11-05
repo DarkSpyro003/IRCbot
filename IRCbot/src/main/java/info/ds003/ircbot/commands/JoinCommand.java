@@ -4,12 +4,12 @@ import info.ds003.ircbot.Main;
 
 public class JoinCommand extends Command {
 
-    public JoinCommand(String name, boolean requiresAdmin, Main main) {
-        super(name, requiresAdmin, main);
+    public JoinCommand(Main main) {
+        super("join", true, main);
     }
 
-    public JoinCommand(String name, String description, boolean requiresAdmin, Main main) {
-        super(name, description, requiresAdmin, main);
+    public JoinCommand(String description, Main main) {
+        super("join", description, true, main);
     }
 
     @Override
