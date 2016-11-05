@@ -29,6 +29,6 @@ jar {
 tasks.withType(FindBugs) {
     reports {
         xml.enabled true
-        html.enabled true
+        html.enabled false
     }
 }
