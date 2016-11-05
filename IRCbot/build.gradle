@@ -26,9 +26,22 @@ jar {
     }
 }
 
-tasks.withType(FindBugs) {
+tasks.withType(Pmd) {
+    ignoreFailures true
     reports {
         xml.enabled true
         html.enabled false
     }
+}
+
+tasks.withType(FindBugs) {
+    ignoreFailures true
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+test {
+    ignoreFailures true
 }
